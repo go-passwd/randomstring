@@ -18,9 +18,9 @@ func punctuate(sentence []string) string {
 	if count > 4 {
 		mean := math.Log(float64(count)) / math.Log(6.0)
 		stdDev := mean / 6
-		commas := int(math.Round(gauss(mean, stdDev)))
+		commas := int(gauss(mean, stdDev))
 		for i := 1; i < commas; i++ {
-			idx := int(math.Round(float64(i) * float64(count) / (float64(commas) + 1)))
+			idx := int(float64(i) * float64(count) / (float64(commas) + 1))
 			if idx > 0 && idx < (count-1) {
 				sentence[idx] = sentence[idx] + ","
 			}
