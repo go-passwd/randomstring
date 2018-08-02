@@ -6,3 +6,9 @@
 [![GoDoc](https://godoc.org/github.com/tomi77/go-stringgen?status.svg)](https://godoc.org/github.com/tomi77/go-stringgen)
 
 Go package for generating strings (random string, lorem ipsum…)
+
+## Installation
+
+~~~sh
+go get -u github.com/tomi77/go-stringgen
+~~~
