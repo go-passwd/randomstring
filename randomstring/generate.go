@@ -6,13 +6,6 @@ import (
 	"strings"
 )
 
-// Base characters allowed in a password
-const (
-	LowerLetters = "abcdefghijklmnopqrstuvwxyz"
-	UpperLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-	Digits       = "1234567890"
-)
-
 // Generate returns a random string of length n consisting of lower letters, upper letters and digitis
 //
 // Usage:
