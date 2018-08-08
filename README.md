@@ -1,11 +1,9 @@
-# randomstring
+# Go random string generator
 
-[![Build Status](https://travis-ci.org/tomi77/go-stringgen.svg?branch=master)](https://travis-ci.org/tomi77/go-stringgen)
-[![Coverage Status](https://coveralls.io/repos/github/tomi77/go-stringgen/badge.svg?branch=master)](https://coveralls.io/github/tomi77/go-stringgen?branch=master)
-[![Go Report Card](https://goreportcard.com/badge/github.com/tomi77/go-stringgen)](https://goreportcard.com/report/github.com/tomi77/go-stringgen)
-[![GoDoc](https://godoc.org/github.com/tomi77/go-stringgen?status.svg)](https://godoc.org/github.com/tomi77/go-stringgen)
-
-Go random string generator
+[![Build Status](https://travis-ci.org/go-randomstring/randomstring.svg?branch=master)](https://travis-ci.org/go-randomstring/randomstring)
+[![Coverage Status](https://coveralls.io/repos/github/go-randomstring/randomstring/badge.svg?branch=master)](https://coveralls.io/github/go-randomstring/randomstring?branch=master)
+[![Go Report Card](https://goreportcard.com/badge/goget.in/randomstring.v1)](https://goreportcard.com/report/goget.in/randomstring.v1)
+[![GoDoc](https://godoc.org/goget.in/randomstring.v1?status.svg)](https://godoc.org/goget.in/randomstring.v1)
 
 ## Usage
 
@@ -13,22 +11,6 @@ Go random string generator
 import "goget.in/randomstring.v1"
 ~~~
 
-### Generate random string
+## Documentation
 
-Generating a random 20-character string with lower letters, upper letters and digits:
-
-~~~go
-randomstring.Generate(20)
-~~~
-
-Generating a random 20-character string with lower letters:
-
-~~~go
-randomstring.Generate(20, randomstring.LowerLetters)
-~~~
-
-### Predefined character sets
-
-* ``randomstring.LowerLetters`` - lower latin letters
-* ``randomstring.UpperLetters`` - upper latin letters
-* ``randomstring.Digits`` - digits
+https://go-randomstring.github.io/
