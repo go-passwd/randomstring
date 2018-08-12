@@ -1,10 +1,6 @@
 package randomstring
 
-import (
-	"crypto/rand"
-	"math/big"
-	"strings"
-)
+import "strings"
 
 // Generate returns a random string of length n consisting of lower letters, upper letters and digitis
 //
@@ -13,18 +9,14 @@ import (
 //
 // Example output:
 //  1*&$^6^$#*15&$3427$2
-func Generate(n int, baseChars ...string) string {
-	var letterBytes string
-	letterBytes = strings.Join(baseChars, "")
+func Generate(n uint, baseChars ...string) (*string, error) {
+	letterBytes := strings.Join(baseChars, "")
 	if len(letterBytes) == 0 {
 		letterBytes = LowerLetters + UpperLetters + Digits
 	}
-	b := make([]byte, n)
-	letterBytesLength := big.NewInt(int64(len(letterBytes)))
-	for i := range b {
-		idx, _ := rand.Int(rand.Reader, letterBytesLength)
-		b[i] = letterBytes[idx.Int64()]
+	g, err := New(NewLength(n), NewIncludeCharset(letterBytes), NewSimpleGenerate())
+	if err != nil {
+		return nil, err
 	}
-
-	return string(b)
+	return g.Generate()
 }
