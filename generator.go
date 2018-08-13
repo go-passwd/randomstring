@@ -83,9 +83,9 @@ func NewSimpleGenerate() GenerateRuleFunc {
 
 // Generator is a advanced random string generator based on rules
 type Generator struct {
-	LengthRule   LengthRuleFunc
-	CharsetRules []CharsetRuleFunc
-	GenerateRule GenerateRuleFunc
+	lengthRule   LengthRuleFunc
+	charsetRules []CharsetRuleFunc
+	generateRule GenerateRuleFunc
 }
 
 // New creates a new Generator generator
@@ -94,20 +94,20 @@ func New(rules ...interface{}) (*Generator, error) {
 	for idx := range rules {
 		ruleType := reflect.ValueOf(rules[idx]).Type()
 		if ruleType == reflect.TypeOf((*LengthRuleFunc)(nil)).Elem() {
-			g.LengthRule = rules[idx].(LengthRuleFunc)
+			g.lengthRule = rules[idx].(LengthRuleFunc)
 		} else if ruleType == reflect.TypeOf((*CharsetRuleFunc)(nil)).Elem() {
-			g.CharsetRules = append(g.CharsetRules, rules[idx].(CharsetRuleFunc))
+			g.charsetRules = append(g.charsetRules, rules[idx].(CharsetRuleFunc))
 		} else if ruleType == reflect.TypeOf((*GenerateRuleFunc)(nil)).Elem() {
-			g.GenerateRule = rules[idx].(GenerateRuleFunc)
+			g.generateRule = rules[idx].(GenerateRuleFunc)
 		}
 	}
-	if !reflect.ValueOf(g.LengthRule).IsValid() {
+	if !reflect.ValueOf(g.lengthRule).IsValid() {
 		return nil, errorNoLength
 	}
-	if len(g.CharsetRules) == 0 {
+	if len(g.charsetRules) == 0 {
 		return nil, errorNoCharset
 	}
-	if !reflect.ValueOf(g.GenerateRule).IsValid() {
+	if !reflect.ValueOf(g.generateRule).IsValid() {
 		return nil, errorNoGen
 	}
 	return g, nil
@@ -115,11 +115,11 @@ func New(rules ...interface{}) (*Generator, error) {
 
 // Generate generates a new random string based of rules
 func (g *Generator) Generate() (*string, error) {
-	length := g.LengthRule()
 	chars := ""
 	for idx := range g.CharsetRules {
 		chars = g.CharsetRules[idx](chars)
 	}
+	length := g.lengthRule()
 	if length == 0 {
 		return nil, errorNoLength
 	}
@@ -127,5 +127,5 @@ func (g *Generator) Generate() (*string, error) {
 		return nil, errorNoCharset
 	}
 
-	return g.GenerateRule(chars, length), nil
+	return g.generateRule(chars, length), nil
 }
