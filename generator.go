@@ -11,8 +11,8 @@ import (
 
 // Predefined errors
 var (
-	errorNoLength  = errors.New("password length must be defined")
-	errorNoCharset = errors.New("charset must be set")
+	errorNoLength  = errors.New("string length must be defined and greater than 0")
+	errorNoCharset = errors.New("charset must be set and can't be empty")
 	errorNoGen     = errors.New("generator function must be set")
 )
 
