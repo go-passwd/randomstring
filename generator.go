@@ -86,6 +86,8 @@ type Generator struct {
 	lengthRule   LengthRuleFunc
 	charsetRules []CharsetRuleFunc
 	generateRule GenerateRuleFunc
+
+	charset string
 }
 
 // New creates a new Generator generator
@@ -101,10 +103,14 @@ func New(rules ...interface{}) (*Generator, error) {
 			g.generateRule = rules[idx].(GenerateRuleFunc)
 		}
 	}
+	g.charset = ""
+	for idx := range g.charsetRules {
+		g.charset = g.charsetRules[idx](g.charset)
+	}
 	if !reflect.ValueOf(g.lengthRule).IsValid() {
 		return nil, errorNoLength
 	}
-	if len(g.charsetRules) == 0 {
+	if len(g.charsetRules) == 0 || g.charset == "" {
 		return nil, errorNoCharset
 	}
 	if !reflect.ValueOf(g.generateRule).IsValid() {
@@ -115,17 +121,10 @@ func New(rules ...interface{}) (*Generator, error) {
 
 // Generate generates a new random string based of rules
 func (g *Generator) Generate() (*string, error) {
-	chars := ""
-	for idx := range g.CharsetRules {
-		chars = g.CharsetRules[idx](chars)
-	}
 	length := g.lengthRule()
 	if length == 0 {
 		return nil, errorNoLength
 	}
-	if chars == "" {
-		return nil, errorNoCharset
-	}
 
-	return g.generateRule(chars, length), nil
+	return g.generateRule(g.charset, length), nil
 }
