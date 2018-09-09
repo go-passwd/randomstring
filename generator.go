@@ -1,6 +1,7 @@
 package randomstring
 
 import (
+	"bytes"
 	"crypto/rand"
 	"errors"
 	"math/big"
@@ -18,14 +19,17 @@ var (
 
 // Rules interfaces
 type (
-	// LengthRuleFunc defined a type of length rule func
+	// LengthRuleFunc returns a length of a string to generate
 	LengthRuleFunc func() uint
 
-	// CharsetRuleFunc defined a type of charset rule func
+	// CharsetRuleFunc modify a charset and returns it
 	CharsetRuleFunc func(charset string) string
 
-	// GenerateRuleFunc defined a type of generate rule func
-	GenerateRuleFunc func(charset string, length uint) *string
+	// GenerateRuleFunc generates a new string based on: charset, length and output rules
+	GenerateRuleFunc func(charset string, length uint, outputRules []OutputRuleFunc) *string
+
+	// OutputRuleFunc checks if the string meets the rule
+	OutputRuleFunc func(str []byte, c byte) bool
 )
 
 // NewLength returns a new length rule func which sets string length to n
@@ -66,14 +70,68 @@ func NewExcludeCharset(chars string) CharsetRuleFunc {
 	})
 }
 
+// NewBeginWith returns a new output rule func that checks if str does start with a one of letters
+func NewBeginWith(letters string) OutputRuleFunc {
+	return OutputRuleFunc(func(str []byte, c byte) bool {
+		if len(str) > 0 {
+			return true
+		}
+		if strings.IndexByte(letters, c) == -1 {
+			return false
+		}
+		return true
+	})
+}
+
+// NewNoDuplicateCharacters returns a new output rule func that checks if str doesn't have c
+func NewNoDuplicateCharacters() OutputRuleFunc {
+	return OutputRuleFunc(func(str []byte, c byte) bool {
+		return bytes.IndexByte(str, c) == -1
+	})
+}
+
+// NewNoSequentialCharacters returns new output rule func that checks if str doesn't have n sequentials characters
+func NewNoSequentialCharacters(n uint) OutputRuleFunc {
+	return OutputRuleFunc(func(str []byte, c byte) bool {
+		lStr := uint(len(str))
+		n1 := n - 1
+		if lStr < n1 {
+			return true
+		}
+		start := byte(n1)
+		valid := false
+		for i := lStr - n1; i < lStr; i++ {
+			if str[i] != c-start {
+				valid = true
+				break
+			}
+			start--
+		}
+		return valid
+	})
+}
+
 // NewSimpleGenerate returns a new generate rule func with simple random string generator
 func NewSimpleGenerate() GenerateRuleFunc {
-	return GenerateRuleFunc(func(charset string, length uint) *string {
+	return GenerateRuleFunc(func(charset string, length uint, outputRules []OutputRuleFunc) *string {
 		b := make([]byte, length)
 		letterBytesLength := big.NewInt(int64(len(charset)))
 		for i := range b {
-			idx, _ := rand.Int(rand.Reader, letterBytesLength)
-			b[i] = charset[idx.Int64()]
+			for {
+				idx, _ := rand.Int(rand.Reader, letterBytesLength)
+				c := charset[idx.Int64()]
+				valid := true
+				for _, outputRule := range outputRules {
+					if !outputRule(b, c) {
+						valid = false
+						break
+					}
+				}
+				if valid {
+					b[i] = c
+					break
+				}
+			}
 		}
 
 		s := string(b)
@@ -86,6 +144,7 @@ type Generator struct {
 	lengthRule   LengthRuleFunc
 	charsetRules []CharsetRuleFunc
 	generateRule GenerateRuleFunc
+	outputRules  []OutputRuleFunc
 
 	charset string
 }
@@ -101,6 +160,8 @@ func New(rules ...interface{}) (*Generator, error) {
 			g.charsetRules = append(g.charsetRules, rules[idx].(CharsetRuleFunc))
 		} else if ruleType == reflect.TypeOf((*GenerateRuleFunc)(nil)).Elem() {
 			g.generateRule = rules[idx].(GenerateRuleFunc)
+		} else if ruleType == reflect.TypeOf((*OutputRuleFunc)(nil)).Elem() {
+			g.outputRules = append(g.outputRules, rules[idx].(OutputRuleFunc))
 		}
 	}
 	g.charset = ""
@@ -126,5 +187,5 @@ func (g *Generator) Generate() (*string, error) {
 		return nil, errorNoLength
 	}
 
-	return g.generateRule(g.charset, length), nil
+	return g.generateRule(g.charset, length, g.outputRules), nil
 }
