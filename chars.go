@@ -13,7 +13,10 @@ const (
 
 	// Symbols is a set of symbols
 	Symbols = "!\";#$%&'()*+,-./:;<=>?@[]^_`{|}~"
+)
 
+// Character sets disallowed
+const (
 	// Similar is a set of letters, digits and symbols which are looks similar
 	Similar = "il1Lo0O"
 
