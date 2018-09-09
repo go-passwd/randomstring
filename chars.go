@@ -1,25 +1,25 @@
 package randomstring
 
-// Character sets allowed in a password
+// Character sets allowed in a generated string
 const (
-	// LowerLetters is a sets of lowercase latin letters
+	// Set of lowercase latin letters
 	LowerLetters = "abcdefghijklmnopqrstuvwxyz"
 
-	// UpperLetters is a set of uppercase latin letters
+	// Set of uppercase latin letters
 	UpperLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
-	// Digits is a set of digits
+	// Set of digits
 	Digits = "1234567890"
 
-	// Symbols is a set of symbols
+	// Set of symbols
 	Symbols = "!\";#$%&'()*+,-./:;<=>?@[]^_`{|}~"
 )
 
-// Character sets disallowed
+// Character sets disallowed in generated string
 const (
-	// Similar is a set of letters, digits and symbols which are looks similar
+	// Set of letters, digits and symbols which are looks similar
 	Similar = "il1Lo0O"
 
-	// Ambigous is a set of sumbols which are ambigous
+	// Set of symbols which are ambigous
 	Ambigous = "{}[]()/\\'\"`~,;:.<>"
 )
