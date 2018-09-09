@@ -21,11 +21,15 @@ https://go-passwd.github.io/randomstring.html
 
 Returns a length of a string to generate.
 
-#### NewLength
+~~~go
+NewLength(n uint)
+~~~
 
 Sets string length to n.
 
-#### NewLengthRange
+~~~go
+NewLengthRange(min, max uint)
+~~~
 
 Sets string length to length between min and max
 
@@ -33,26 +37,36 @@ Sets string length to length between min and max
 
 Modify a charset and returns it.
 
-#### NewIncludeCharset
+~~~go
+NewIncludeCharset(chars string)
+~~~
 
 Add chars to charset.
 
-#### NewExcludeCharset
+~~~go
+NewExcludeCharset(chars string)
+~~~
 
 Removes chars from charset.
 
 ### Output rule function
 
-#### NewBeginWith
+~~~go
+NewBeginWith(letters string)
+~~~
 
 Checks if newly selected at random char does start with a one of letters.
 Function only executed at first char.
 
-#### NewNoDuplicateCharacters
+~~~go
+NewNoDuplicateCharacters()
+~~~
 
 Checks if string doesn't have newly selected at random char.
 
-#### NewNoSequentialCharacters
+~~~go
+NewNoSequentialCharacters(n uint)
+~~~
 
 Checks if string doesn't have n sequentials characters.
 
@@ -60,6 +74,8 @@ Checks if string doesn't have n sequentials characters.
 
 Generates a new string based on: charset, length and output rules.
 
-#### NewSimpleGenerate
+~~~go
+NewSimpleGenerate()
+~~~
 
 Simple random string generator.
