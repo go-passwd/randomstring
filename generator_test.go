@@ -11,7 +11,7 @@ func TestNew(t *testing.T) {
 }
 
 func TestGenerator_Generate(t *testing.T) {
-	g, _ := New(NewLength(10), NewIncludeCharset("abc"), NewSimpleGenerate())
+	g, _ := New(NewLength(10), NewIncludeCharset("abc"), NewDefaultGenerate())
 	s, err := g.Generate()
 	assert.Nil(t, err)
 	assert.Len(t, *s, 10)
@@ -45,8 +45,8 @@ func TestNewExcludeCharset(t *testing.T) {
 	assert.Equal(t, "ad", chars)
 }
 
-func TestNewSimpleGenerate(t *testing.T) {
-	rule := NewSimpleGenerate()
+func TestNewDefaultGenerate(t *testing.T) {
+	rule := NewDefaultGenerate()
 	s := rule("abc", 10, []OutputRuleFunc{})
 	assert.Len(t, *s, 10)
 }

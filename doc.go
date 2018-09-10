@@ -8,7 +8,7 @@
 //
 // This code:
 //
-//  gen := randomstring.New(randomstring.NewLength(20), randomstring.NewInlcudeCharset(randomstring.LowerLetters), randomstring.NewNoDuplicateCharacters(), randomstring.NewSimpleGenerator())
+//  gen := randomstring.New(randomstring.NewLength(20), randomstring.NewInlcudeCharset(randomstring.LowerLetters), randomstring.NewNoDuplicateCharacters())
 //  fmt.Println(gen.Generate())
 //
 // will generate random string that:
@@ -41,5 +41,5 @@
 //
 // Usage:
 //
-//  gen := randomstring.New(randomstring.NewLength(20), NewCustomCharset(), randomstring.NewNoDuplicateCharacters(), randomstring.NewSimpleGenerator())
+//  gen := randomstring.New(randomstring.NewLength(20), NewCustomCharset(), randomstring.NewNoDuplicateCharacters())
 package randomstring

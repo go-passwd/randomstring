@@ -14,7 +14,7 @@ func Generate(n uint, baseChars ...string) (*string, error) {
 	if len(letterBytes) == 0 {
 		letterBytes = LowerLetters + UpperLetters + Digits
 	}
-	g, err := New(NewLength(n), NewIncludeCharset(letterBytes), NewSimpleGenerate())
+	g, err := New(NewLength(n), NewIncludeCharset(letterBytes))
 	if err != nil {
 		return nil, err
 	}

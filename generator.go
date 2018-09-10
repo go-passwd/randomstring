@@ -14,7 +14,6 @@ import (
 var (
 	errorNoLength  = errors.New("string length must be defined and greater than 0")
 	errorNoCharset = errors.New("charset must be set and can't be empty")
-	errorNoGen     = errors.New("generator function must be set")
 )
 
 // Rules interfaces
@@ -111,8 +110,8 @@ func NewNoSequentialCharacters(n uint) OutputRuleFunc {
 	})
 }
 
-// NewSimpleGenerate returns a new generate rule func with simple random string generator
-func NewSimpleGenerate() GenerateRuleFunc {
+// NewDefaultGenerate returns a new generate rule func with default random string generator
+func NewDefaultGenerate() GenerateRuleFunc {
 	return GenerateRuleFunc(func(charset string, length uint, outputRules []OutputRuleFunc) *string {
 		b := make([]byte, length)
 		letterBytesLength := big.NewInt(int64(len(charset)))
@@ -174,8 +173,8 @@ func New(rules ...interface{}) (*Generator, error) {
 	if len(g.charsetRules) == 0 || g.charset == "" {
 		return nil, errorNoCharset
 	}
-	if !reflect.ValueOf(g.generateRule).IsValid() {
-		return nil, errorNoGen
+	if g.generateRule == nil {
+		g.generateRule = NewDefaultGenerate()
 	}
 	return g, nil
 }

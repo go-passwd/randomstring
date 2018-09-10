@@ -75,7 +75,7 @@ Checks if string doesn't have n sequentials characters.
 Generates a new string based on: charset, length and output rules.
 
 ~~~go
-NewSimpleGenerate()
+NewDefaultGenerate()
 ~~~
 
 Simple random string generator.
